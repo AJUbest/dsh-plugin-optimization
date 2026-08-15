@@ -1,0 +1,12 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# logs & temp
+*.log
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
