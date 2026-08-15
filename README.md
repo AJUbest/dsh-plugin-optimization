@@ -1,4 +1,4 @@
-# dsh-plugin-optimization (Plugin-Optimization)
+# dsh-plugin-optimization
 
 DSH 插件管理器：把设置中的插件列表分成 **自带插件 / 自定义插件** 两个分区，
 自定义插件统一存放在独立目录，支持浏览文件夹、导入、注册、开启/关闭、删除，
