@@ -63,29 +63,7 @@ dsh plugin --profile web add https://github.com/AJUbest/dsh-plugin-optimization.
   复制进分区并重新注册（一次性；之后依赖变为 `link:` 指向分区）
 - 安全：仅允许本机 / 同主机来源调用；所有路径做包含校验，防目录穿越
 
-## 给维护者：如何打包并发布
 
-### 方式一：GitHub（推荐，与 theme-switcher 一致）
-
-```bash
-cd ~/.dsh/custom-plugins/dsh-plugin-optimization
-git init
-git add .
-git commit -m "feat: Plugin-Optimization v0.2.0"
-# 在 GitHub 新建空仓库后：
-git remote add origin https://github.com/<你的GitHub用户名>/dsh-plugin-optimization.git
-git branch -M main
-git push -u origin main
-```
-
-发布后，任何用户都可用上面的**一行命令**安装。
-
-### 方式二：npm
-
-```bash
-npm pack          # 打包（files 字段只包含 lib / cordis.patch.yml / README / LICENSE）
-npm publish       # 发布（需先在 npm 注册）
-```
 
 ## 卸载
 
