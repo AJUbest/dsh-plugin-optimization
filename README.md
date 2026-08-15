@@ -16,6 +16,18 @@ DSH 插件管理器：把设置中的插件列表分成 **自带插件 / 自定�
   会自动被移入自定义分区（启动后后台完成，日志见终端）
 - **收纳到分区**：手动把遗留插件并入自定义分区的按钮
 
+## 工作原理
+
+- 宿主端（`lib/index.js`，仅 Node 内置模块）：通过 `ctx.webServer.register`
+  注册一组 JSON API：
+  `/plugins/dsh-plugin-optimization/api/{state,open,import,register,toggle,remove,migrate}`
+- 注册 / 移除 / 收纳复用官方 `dsh plugin` 命令（自动 reconcile bundles）
+- 开启 / 关闭 = 编辑 profile 的 `cordis.patch.yml`（`- id: X` + `disabled: true`）
+- 自动收纳 = 启动后扫描 profile 依赖，把文件不在自定义分区中的非官方插件
+  复制进分区并重新注册（一次性；之后依赖变为 `link:` 指向分区）
+- 安全：仅允许本机 / 同主机来源调用；所有路径做包含校验，防目录穿越
+
+
 ## 使用
 
 | 操作 | 说明 |
@@ -37,16 +49,6 @@ DSH 插件管理器：把设置中的插件列表分成 **自带插件 / 自定�
 └── profiles/web/            ← profile（依赖以 link: 指向自定义分区）
 ```
 
-## 工作原理
-
-- 宿主端（`lib/index.js`，仅 Node 内置模块）：通过 `ctx.webServer.register`
-  注册一组 JSON API：
-  `/plugins/dsh-plugin-optimization/api/{state,open,import,register,toggle,remove,migrate}`
-- 注册 / 移除 / 收纳复用官方 `dsh plugin` 命令（自动 reconcile bundles）
-- 开启 / 关闭 = 编辑 profile 的 `cordis.patch.yml`（`- id: X` + `disabled: true`）
-- 自动收纳 = 启动后扫描 profile 依赖，把文件不在自定义分区中的非官方插件
-  复制进分区并重新注册（一次性；之后依赖变为 `link:` 指向分区）
-- 安全：仅允许本机 / 同主机来源调用；所有路径做包含校验，防目录穿越
 
 ## 安装（一行命令）
 
