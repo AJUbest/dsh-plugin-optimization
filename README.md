@@ -16,21 +16,6 @@ DSH 插件管理器：把设置中的插件列表分成 **自带插件 / 自定�
   会自动被移入自定义分区（启动后后台完成，日志见终端）
 - **收纳到分区**：手动把遗留插件并入自定义分区的按钮
 
-## 安装（一行命令）
-
-```bash
-dsh plugin --profile web add https://github.com/AJUbest/dsh-plugin-optimization.git
-```
-
-> 前置要求：需要 Node.js 与 **pnpm**（`dsh plugin` 命令依赖）。
-> 没有 pnpm 时先执行：`npm install -g pnpm`（或 `corepack enable pnpm`）。
-
-安装后重启网关（`dsh-restart` 或重启启动器），然后刷新页面：
-**设置 → 插件管理**。
-
-> 提示：刚安装后建议重启两次——第一次让本插件生效并自动收纳历史插件，
-> 第二次让收纳结果完全加载。
-
 ## 使用
 
 | 操作 | 说明 |
@@ -63,7 +48,20 @@ dsh plugin --profile web add https://github.com/AJUbest/dsh-plugin-optimization.
   复制进分区并重新注册（一次性；之后依赖变为 `link:` 指向分区）
 - 安全：仅允许本机 / 同主机来源调用；所有路径做包含校验，防目录穿越
 
+## 安装（一行命令）
 
+```bash
+dsh plugin --profile web add https://github.com/AJUbest/dsh-plugin-optimization.git
+```
+
+> 前置要求：需要 Node.js 与 **pnpm**（`dsh plugin` 命令依赖）。
+> 没有 pnpm 时先执行：`npm install -g pnpm`（或 `corepack enable pnpm`）。
+
+安装后重启网关（`dsh-restart` 或重启启动器），然后刷新页面：
+**设置 → 插件管理**。
+
+> 提示：刚安装后建议重启两次——第一次让本插件生效并自动收纳历史插件，
+> 第二次让收纳结果完全加载。
 
 ## 卸载
 
