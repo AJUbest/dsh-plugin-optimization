@@ -18,9 +18,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/<你的GitHub用户名>/dsh-plugin-optimization.git"
+    "url": "git+https://github.com/AJUbest/dsh-plugin-optimization.git"
   },
-  "homepage": "https://github.com/<你的GitHub用户名>/dsh-plugin-optimization#readme",
+  "homepage": "https://github.com/AJUbest/dsh-plugin-optimization#readme",
   "dsh": {
     "client": {
       "platform": "web",
