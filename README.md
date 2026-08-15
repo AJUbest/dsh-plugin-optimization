@@ -19,7 +19,7 @@ DSH 插件管理器：把设置中的插件列表分成 **自带插件 / 自定�
 ## 安装（一行命令）
 
 ```bash
-dsh plugin --profile web add https://github.com/<你的GitHub用户名>/dsh-plugin-optimization.git
+dsh plugin --profile web add https://github.com/AJUbest/dsh-plugin-optimization.git
 ```
 
 > 前置要求：需要 Node.js 与 **pnpm**（`dsh plugin` 命令依赖）。
