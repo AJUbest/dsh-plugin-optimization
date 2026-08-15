@@ -1,6 +1,6 @@
 {
   "name": "dsh-plugin-optimization",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Plugin-Optimization: 把 DSH 设置中的插件列表分成「自带插件 / 自定义插件」两个分区，支持浏览文件夹、导入、注册、开启/关闭、删除与自动收纳；所有第三方插件统一存放在独立目录，便于查找与管理。",
   "type": "module",
   "main": "lib/index.js",
