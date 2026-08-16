@@ -1,6 +1,6 @@
 // 分类引擎测试：8 大类别命中、跨类多标签、未命中默认。
 // Usage: node test-classify.mjs
-import { classifyText } from "./lib/index.js";
+import { classifyText, classifyWeighted } from "./lib/index.js";
 
 let failures = 0;
 function check(label, cond, detail) {
@@ -26,14 +26,34 @@ check("UI: 侧边栏主题", ids("VSCode-like right sidebar with terminal, edito
 check("System: 插件管理缓存", ids("插件管理器：打包分发、缓存与进程管理").includes("system"));
 // 8) 离线&安全合规
 check("Security: 加密审计离线", ids("数据加密、隐私脱敏、审计日志与离线内网部署").includes("security"));
-// 跨类多标签
+// 跨类多标签（真并列才多标）
 {
   const ids1 = ids("可视化插件市场：浏览、安装、卸载社区插件");
   check("cross: 市场 = system+ui", ids1.includes("system") && ids1.includes("ui"), JSON.stringify(ids1));
 }
 {
   const ids2 = ids("文件系统工具插件：本地文件搜索与批量处理，支持事件监听");
-  check("cross: 文件系统 = skill+system(+hook)", ids2.includes("skill") && ids2.includes("system"), JSON.stringify(ids2));
+  // skill 为主功能(工具/搜索/文件系统)，hook 真跨类(事件/监听≥2分)，system 弱信号(文件系统×1)不标
+  check("main: 文件系统工具 → skill 主功能 + hook 跨类，system 弱信号不标", ids2.includes("skill") && ids2.includes("hook") && !ids2.includes("system"), JSON.stringify(ids2));
+}
+// 加权规则：主功能占优时只给主标签；真并列才多标签
+{
+  const ids3 = classifyWeighted([
+    { text: "dsh-terminal-workflow", weight: 3 },
+    { text: "多工具串联工作流编排与触发式自动化", weight: 2 },
+    { text: "workflow pipeline automation orchestration", weight: 2 },
+    { text: "README 提到 terminal 和 ui", weight: 0.5 },
+  ]).map((c) => c.id);
+  check("weighted: 主功能 workflow，README 弱信号不跨标", ids3.length === 1 && ids3.includes("workflow"), JSON.stringify(ids3));
+}
+{
+  const ids4 = classifyWeighted([
+    { text: "dsh-ui-theme", weight: 3 },
+    { text: "主题皮肤与侧边栏界面美化", weight: 2 },
+    { text: "theme skin sidebar ui", weight: 2 },
+    { text: "", weight: 0.5 },
+  ]).map((c) => c.id);
+  check("weighted: 主功能 ui", ids4.length === 1 && ids4.includes("ui"), JSON.stringify(ids4));
 }
 // 未命中 → 空数组（前端显示"未分类"）
 check("no match returns []", ids("a totally unrelated random plugin name").length === 0, JSON.stringify(ids("a totally unrelated random plugin name")));
