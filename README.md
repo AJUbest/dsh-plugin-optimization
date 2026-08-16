@@ -15,7 +15,8 @@ DSH 插件管理器：把设置中的插件列表分成 **自带插件 / 自定�
 - **自动收纳**：安装本插件后，之前通过 `dsh plugin add` 安装的插件
   会自动被移入自定义分区（启动后后台完成，日志见终端）
 - **收纳到分区**：手动把遗留插件并入自定义分区的按钮
-- <img width="613" height="602" alt="屏幕截图 2026-08-15 224420" src="https://github.com/user-attachments/assets/9f35b3bb-0ab0-4397-b3a3-3fb22e03b0d0" />
+<img width="599" height="601" alt="屏幕截图 2026-08-16 165828" src="https://github.com/user-attachments/assets/cf340307-96b2-4f12-86e2-4f43efc50a23" />
+
 
 
 ## 工作原理
