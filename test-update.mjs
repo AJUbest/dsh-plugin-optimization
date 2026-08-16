@@ -69,12 +69,13 @@ function mockRes() {
   check("update/info ignored now true", j2.value.ignored === true);
 }
 
-// update/apply：无新版本 → 流式返回"已是最新版本"（不会执行 git pull）
+// update/apply：流式返回终态（done=已是最新/更新完成；error=网络失败）——核心是不卡死
 {
   const res = mockRes();
   await routes.get("/plugins/dsh-plugin-optimization/api/update/apply")(mockReq("POST"), res);
   check("update/apply streamed", res.status === 200, "status=" + res.status);
-  check("update/apply contains done stage", res.body.includes('"stage":"done"'), res.body.slice(0, 300));
+  const terminal = res.body.includes('"stage":"done"') || res.body.includes('"stage":"error"');
+  check("update/apply streams a terminal stage (done or error)", terminal, res.body.slice(0, 300));
 }
 
 console.log(failures === 0 ? "\nALL TESTS PASSED" : "\n" + failures + " TEST(S) FAILED");
