@@ -1,43 +1,43 @@
 {
-  "name": "dsh-plugin-optimization",
-  "version": "0.2.7",
-  "description": "Plugin-Optimization: 把 DSH 设置中的插件列表分成「自带插件 / 自定义插件」两个分区，支持浏览文件夹、导入、注册、开启/关闭、删除与自动收纳；所有第三方插件统一存放在独立目录，便于查找与管理。",
-  "type": "module",
-  "main": "lib/index.js",
-  "exports": {
-    ".": "./lib/index.js",
-    "./client": "./lib/client.js",
-    "./package.json": "./package.json"
-  },
-  "keywords": [
-    "deepseek-harness",
-    "dsh",
-    "plugin",
-    "plugin-manager"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AJUbest/dsh-plugin-optimization.git"
-  },
-  "homepage": "https://github.com/AJUbest/dsh-plugin-optimization#readme",
-  "dsh": {
-    "client": {
-      "platform": "web",
-      "inject": [
-        "@deepseek-ai/dsh-client-runtime",
-        "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-api-gateway"
-      ]
-    },
-    "bundle": {
-      "patch": "./cordis.patch.yml"
-    }
-  },
-  "license": "MIT",
-  "files": [
-    "lib",
-    "cordis.patch.yml",
-    "README.md",
-    "LICENSE"
-  ]
+    "name":  "dsh-plugin-optimization",
+    "version":  "0.3.0",
+    "description":  "Plugin-Optimization: 把 DSH 设置中的插件列表分成「自带插件 / 自定义插件」两个分区，支持浏览文件夹、导入、注册、开启/关闭、删除与自动收纳；并内置插件依赖自动检测与冲突修复（一键补齐缺失依赖、重链损坏插件，解决插件启动报错）。",
+    "type":  "module",
+    "main":  "lib/index.js",
+    "exports":  {
+                    ".":  "./lib/index.js",
+                    "./client":  "./lib/client.js",
+                    "./package.json":  "./package.json"
+                },
+    "keywords":  [
+                     "deepseek-harness",
+                     "dsh",
+                     "plugin",
+                     "plugin-manager"
+                 ],
+    "repository":  {
+                       "type":  "git",
+                       "url":  "git+https://github.com/AJUbest/dsh-plugin-optimization.git"
+                   },
+    "homepage":  "https://github.com/AJUbest/dsh-plugin-optimization#readme",
+    "dsh":  {
+                "client":  {
+                               "platform":  "web",
+                               "inject":  [
+                                              "@deepseek-ai/dsh-client-runtime",
+                                              "@deepseek-ai/dsh-client-locale",
+                                              "@deepseek-ai/dsh-api-gateway"
+                                          ]
+                           },
+                "bundle":  {
+                               "patch":  "./cordis.patch.yml"
+                           }
+            },
+    "license":  "MIT",
+    "files":  [
+                  "lib",
+                  "cordis.patch.yml",
+                  "README.md",
+                  "LICENSE"
+              ]
 }
