@@ -16,7 +16,7 @@ DSH 插件管理器：把设置中的插件列表分成 **自带插件 / 自定�
   会自动被移入自定义分区（启动后后台完成，日志见终端）
 - **收纳到分区**：手动把遗留插件并入自定义分区的按钮
 -  **依赖与冲突性检查**：点击按钮可以自动检查有无缺失的依赖，并检查是否有插件冲突并给出提醒
-<img width="200" height="200" alt="1" src="https://github.com/user-attachments/assets/741881cb-d259-4e7f-a769-b7ae9bbf79f5" /><img width="200" height="200" alt="2" src="https://github.com/user-attachments/assets/c1b0b7dd-7410-4f9d-9f42-fc2d42b5c9cd" />
+<img width="250" height="250" alt="1" src="https://github.com/user-attachments/assets/741881cb-d259-4e7f-a769-b7ae9bbf79f5" /><img width="250" height="250" alt="2" src="https://github.com/user-attachments/assets/c1b0b7dd-7410-4f9d-9f42-fc2d42b5c9cd" />
 
 
 
