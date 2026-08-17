@@ -63,6 +63,7 @@ dsh plugin --profile web add https://github.com/AJUbest/dsh-plugin-optimization.
 ```
 
 > 前置要求：需要 Node.js 与 **pnpm**（`dsh plugin` 命令依赖）。
+> 
 > 没有 pnpm 时先执行：`npm install -g pnpm`（或 `corepack enable pnpm`）。
 
 安装后重启网关（`dsh-restart` 或重启启动器），然后刷新页面：
