@@ -1,51 +1,140 @@
 # dsh-plugin-optimization
 
-DSH 插件管理器：把设置中的插件列表分成 **自带插件 / 自定义插件** 两个分区，
-自定义插件统一存放在独立目录，支持浏览文件夹、导入、注册、开启/关闭、删除，
-并**自动把历史遗留的已注册插件收纳进自定义分区**。
+**Plugin Manager for DeepSeek Harness · DSH 插件管理器**
 
-## 功能
+> A single-plugin solution that splits the plugins in **Settings → Plugins** into
+> **Built-in** and **Custom** partitions, manages them visually, auto-detects and
+> repairs dependency issues, and follows the DSH UI language (中文 / English).
+>
+> 把 DSH 设置里的插件分成「自带 / 自定义」两个分区统一管理：可视化浏览、导入、
+> 注册、启停、删除、自动收纳；内置依赖自动检测与一键修复；界面语言跟随 DSH
+> 即时切换（中 / 英）。
 
-- **自定义插件（置顶显示）**：所有第三方插件，统一存放在
-  `~/.dsh/custom-plugins/`（与自带插件彻底分开，浏览文件夹一目了然）
-- **自带插件**：dsh 官方插件（`@deepseek-ai/*`），只读浏览
-- **浏览文件夹**：一键在资源管理器中打开对应分区（或单个插件目录）
-- **导入**：粘贴 git 地址 / 本地文件夹路径 / npm 包名 → 自动落入自定义分区并注册
-- **注册 / 开启 / 关闭 / 删除**：完整管理每个自定义插件
-- **自动收纳**：安装本插件后，之前通过 `dsh plugin add` 安装的插件
-  会自动被移入自定义分区（启动后后台完成，日志见终端）
-- **收纳到分区**：手动把遗留插件并入自定义分区的按钮
--  **依赖与冲突性检查**：点击按钮可以自动检查有无缺失的依赖，并检查是否有插件冲突并给出提醒
-<img width="400" height="400" alt="1" src="https://github.com/user-attachments/assets/741881cb-d259-4e7f-a769-b7ae9bbf79f5" /><img width="400" height="400" alt="2" src="https://github.com/user-attachments/assets/c1b0b7dd-7410-4f9d-9f42-fc2d42b5c9cd" />
+[English](#english) · [中文](#中文)
 
+---
 
+## English
 
+### Features
 
+- **Custom / Built-in partitions** — third-party plugins live in
+  `~/.dsh/custom-plugins/`, clearly separated from the official `@deepseek-ai/*`
+  packages (which stay read-only).
+- **Browse folders** — open the custom partition, built-in partition, or any
+  single plugin directory in your file manager with one click.
+- **Import** — paste a **git URL / local folder path / npm package name**; it is
+  downloaded into the custom partition and registered automatically.
+- **Register / Enable / Disable / Delete** — full lifecycle management for every
+  custom plugin.
+- **Auto-tidy (migration)** — plugins previously installed via `dsh plugin add`
+  are automatically moved into the custom partition after boot (one-time).
+- **8-category auto classification** — every plugin gets color tags
+  (MCP / Skill / Hook / Workflow / Model / UI / System / Security).
+- **Dependency check & one-click repair** — scan every plugin's
+  dependencies/peers, detect missing / broken links / version conflicts
+  (the usual cause of "plugin failed to start"), and repair them with one
+  click (re-link broken plugins, `pnpm install` the missing runtime deps).
+- **Bilingual UI** — the interface follows the DSH locale setting instantly
+  (no page refresh), including the settings tab label.
 
-## 工作原理
+### Screenshot
+
+<img width="599" height="601" alt="Plugin Manager screenshot" src="https://github.com/user-attachments/assets/cf340307-96b2-4f12-86e2-4f43efc50a23" />
+
+### How it works
+
+- Host side (`lib/index.js`, Node built-ins only) registers JSON APIs via
+  `ctx.webServer.register`:
+  `/plugins/dsh-plugin-optimization/api/{state,open,import,register,toggle,remove,migrate,deps/scan,deps/fix,...}`
+- Register / remove / migrate reuse the official `dsh plugin` CLI
+  (bundles reconcile automatically); enable/disable edits
+  `dsh.profile.bundles` in the profile `package.json` (same source as the
+  plugin market, so states stay in sync), and legacy
+  `cordis.patch.yml` disable blocks are cleaned up on the way.
+- Auto-tidy scans profile dependencies after boot and moves non-official
+  plugins whose files are outside the custom partition into it
+  (`link:` re-registration).
+- Dependency check resolves links against the plugin directory, the
+  partition-level `node_modules`, the profile, and the DSH install —
+  matching real module resolution.
+- Security: only same-host / loopback origins are accepted; every path is
+  containment-checked.
+
+### Directory layout
+
+```
+~/.dsh/
+├── custom-plugins/          ← custom partition (maintained here)
+│   ├── dsh-plugin-optimization/
+│   └── <plugins you import>/
+└── profiles/web/            ← profile (deps point at the partition via link:)
+```
+
+### Install
+
+```bash
+dsh plugin --profile web add https://github.com/AJUbest/dsh-plugin-optimization.git
+```
+
+> Requirements: Node.js and **pnpm** (used by `dsh plugin`).
+> Install pnpm first: `npm install -g pnpm` (or `corepack enable pnpm`).
+
+Then restart the gateway and open **Settings → Plugins → Plugin Manager**.
+
+> Tip: restart twice after a fresh install — the first boot auto-tidies legacy
+> plugins, the second makes the migration fully effective.
+
+### Uninstall
+
+```bash
+dsh plugin --profile web remove dsh-plugin-optimization
+```
+
+### License
+
+MIT
+
+---
+
+## 中文
+
+### 功能
+
+- **自定义 / 自带分区**：第三方插件统一存放在 `~/.dsh/custom-plugins/`，
+  与官方 `@deepseek-ai/*` 插件彻底分开（官方插件只读浏览）。
+- **浏览文件夹**：一键在资源管理器中打开自定义分区 / 自带分区 / 单个插件目录。
+- **导入**：粘贴 **git 地址 / 本地文件夹路径 / npm 包名** → 自动落入自定义分区并注册。
+- **注册 / 开启 / 关闭 / 删除**：完整管理每个自定义插件（操作后重启网关生效）。
+- **自动收纳**：安装后，之前通过 `dsh plugin add` 装的插件会被自动移入
+  自定义分区（一次性，日志见终端）。
+- **8 大分类自动标签**：每个插件自动打上彩色分类标签
+  （MCP / Skill / 钩子 / Workflow / 模型 / UI / 系统 / 安全合规）。
+- **依赖检查与一键修复**：扫描每个插件的依赖/peer 是否齐全、链接是否完好、
+  是否存在跨插件版本冲突（插件"启动报错"的头号原因）；一键自动修复
+  （重链损坏的插件、`pnpm install` 补齐缺失的运行时依赖）。
+- **双语界面**：界面跟随 DSH 的语言设置**即时**切换（无需刷新页面），
+  连左侧标签页名称都会跟着变。
+
+### 截图
+
+<img width="599" height="601" alt="插件管理截图" src="https://github.com/user-attachments/assets/cf340307-96b2-4f12-86e2-4f43efc50a23" />
+
+### 工作原理
 
 - 宿主端（`lib/index.js`，仅 Node 内置模块）：通过 `ctx.webServer.register`
-  注册一组 JSON API：
-  `/plugins/dsh-plugin-optimization/api/{state,open,import,register,toggle,remove,migrate}`
-- 注册 / 移除 / 收纳复用官方 `dsh plugin` 命令（自动 reconcile bundles）
-- 开启 / 关闭 = 编辑 profile 的 `cordis.patch.yml`（`- id: X` + `disabled: true`）
+  注册 JSON API：
+  `/plugins/dsh-plugin-optimization/api/{state,open,import,register,toggle,remove,migrate,deps/scan,deps/fix,...}`
+- 注册 / 移除 / 收纳复用官方 `dsh plugin` 命令（自动 reconcile bundles）；
+  开启 / 关闭 = 直接改 profile 的 `dsh.profile.bundles`（与插件市场同源同步），
+  并顺带清理旧的 `cordis.patch.yml` 禁用块。
 - 自动收纳 = 启动后扫描 profile 依赖，把文件不在自定义分区中的非官方插件
-  复制进分区并重新注册（一次性；之后依赖变为 `link:` 指向分区）
-- 安全：仅允许本机 / 同主机来源调用；所有路径做包含校验，防目录穿越
+  复制进分区并重新注册（一次性；之后依赖为 `link:`）。
+- 依赖检测按"插件目录 → 分区顶层 node_modules → profile → dsh 安装目录"的
+  真实解析顺序核对，避免误报。
+- 安全：仅接受同主机 / 回环来源；所有路径做包含校验，防目录穿越。
 
-
-## 使用
-
-| 操作 | 说明 |
-|---|---|
-| 浏览文件夹 | 打开自定义分区 / 自带分区目录，可直接查看、添加、删除插件文件 |
-| 导入 | 输入 git 地址 / 本地路径 / npm 包名，自动复制到自定义分区并注册（重启生效） |
-| 注册 | 手动放进分区目录的插件，点「注册」加载它（重启生效） |
-| 开启 / 关闭 | 写入 profile 的 `cordis.patch.yml` 禁用条目（重启生效） |
-| 删除 | 取消注册并删除插件目录 |
-| 收纳到分区 | 把历史遗留的已注册插件移入自定义分区 |
-
-## 目录划分
+### 目录划分
 
 ```
 ~/.dsh/
@@ -55,29 +144,26 @@ DSH 插件管理器：把设置中的插件列表分成 **自带插件 / 自定�
 └── profiles/web/            ← profile（依赖以 link: 指向自定义分区）
 ```
 
-
-## 安装（一行命令）
+### 安装（一行命令）
 
 ```bash
 dsh plugin --profile web add https://github.com/AJUbest/dsh-plugin-optimization.git
 ```
 
 > 前置要求：需要 Node.js 与 **pnpm**（`dsh plugin` 命令依赖）。
-> 
 > 没有 pnpm 时先执行：`npm install -g pnpm`（或 `corepack enable pnpm`）。
 
-安装后重启网关（`dsh-restart` 或重启启动器），然后刷新页面：
-**设置 → 插件管理**。
+安装后重启网关，然后进入 **设置 → 插件 → 插件管理**。
 
 > 提示：刚安装后建议重启两次——第一次让本插件生效并自动收纳历史插件，
 > 第二次让收纳结果完全加载。
 
-## 卸载
+### 卸载
 
 ```bash
 dsh plugin --profile web remove dsh-plugin-optimization
 ```
 
-## License
+### 许可证
 
 MIT

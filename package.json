@@ -1,7 +1,7 @@
 {
     "name":  "dsh-plugin-optimization",
-    "version":  "0.3.1",
-    "description":  "Plugin-Optimization: 把 DSH 设置中的插件列表分成「自带插件 / 自定义插件」两个分区，支持浏览文件夹、导入、注册、开启/关闭、删除与自动收纳；并内置插件依赖自动检测与冲突修复（一键补齐缺失依赖、重链损坏插件，解决插件启动报错）。",
+    "version":  "0.5.0",
+    "description":  "DSH 插件管理器（Plugin Manager for DeepSeek Harness）：把设置中的插件分成「自带 / 自定义」分区统一管理（浏览/导入/注册/启停/删除/自动收纳），内置插件依赖自动检测与一键修复（解决启动报错），插件自动分类标签；UI 双语国际化，跟随 DSH 语言中/英即时切换。",
     "type":  "module",
     "main":  "lib/index.js",
     "exports":  {
